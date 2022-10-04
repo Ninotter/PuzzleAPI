@@ -54,7 +54,7 @@ class ProduitController extends AbstractController
      * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    #[Route('/produit/get/{idProduit}', name: 'produit.get', methods: ['GET'])]
+    #[Route('/produit/{idProduit}', name: 'produit.get', methods: ['GET'])]
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
     public function getProduitById(Produit $produit, SerializerInterface $serializer): JsonResponse
     {
@@ -113,7 +113,7 @@ class ProduitController extends AbstractController
         }
     }
 
-    #[Route('/produit/', name: 'produit.create', methods: ['POST'])]
+    #[Route('/produit', name: 'produit.create', methods: ['POST'])]
     public function createProduit(TypeRepository $typeRepository, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
         $produit = $serializer->deserialize(
