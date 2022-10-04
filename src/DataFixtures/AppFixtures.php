@@ -33,12 +33,12 @@ class AppFixtures extends Fixture
         for ($i=0; $i < 20; $i++) { 
             $product = new Produit();
             $product->setNom($this->faker->word());
-            $prix = mt_rand(0,1000) / 10;
-            $product->setPrix($prix);
             $product->setNiveauDifficulte(mt_rand(0,5));
             $product->setType($lesTypes[array_rand($lesTypes)]);
-            $product->setTempsCompletion(mt_rand(10,200));
+            $product->setTempsCompletion($product->getNiveauDifficulte() * mt_rand(2,30));
             $product->setNbPiece(mt_rand(1,40));
+            $prix = mt_rand(30,1000) / 10;
+            $product->setPrix($prix);
             $manager->persist($product);
         }
 
