@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProduitController extends AbstractController
 {
@@ -113,8 +114,20 @@ class ProduitController extends AbstractController
         }
     }
 
+
+    /**
+     * Créé un produit avec le contenu réceoptionné dans le POST
+     *
+     * @param TypeRepository $typeRepository
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param SerializerInterface $serializer
+     * @param UrlGeneratorInterface $urlGenerator
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
+     */
     #[Route('/produit/', name: 'produit.create', methods: ['POST'])]
-    public function createProduit(TypeRepository $typeRepository, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator): JsonResponse
+    public function createProduit(TypeRepository $typeRepository, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator): JsonResponse
     {
         $produit = $serializer->deserialize(
             $request->getContent(),
@@ -126,6 +139,10 @@ class ProduitController extends AbstractController
         $content =$request->toArray();
         $type = $typeRepository->find($content["idType"] ?? -1);
         $produit->setType($type);
+        $errors = $validator->validate($produit);
+        if ($errors->count() > 0) {
+            return new JsonResponse($serializer->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
+        }
         $entityManager->persist($produit);
         $entityManager->flush();
 
@@ -167,5 +184,4 @@ class ProduitController extends AbstractController
         $jsonProduit = $serializer->serialize($produit, 'json', ['groups' => 'getProduit']);
         return new JsonResponse($jsonProduit, Response::HTTP_CREATED, ["Location" => $location], true);
     }
-
 }
