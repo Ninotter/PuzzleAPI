@@ -32,6 +32,12 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Type $Type = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $nbPiece = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $tempsCompletion = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -81,6 +87,30 @@ class Produit
     public function setType(?Type $Type): self
     {
         $this->Type = $Type;
+
+        return $this;
+    }
+
+    public function getNbPiece(): ?int
+    {
+        return $this->nbPiece;
+    }
+
+    public function setNbPiece(?int $nbPiece): self
+    {
+        $this->nbPiece = $nbPiece;
+
+        return $this;
+    }
+
+    public function getTempsCompletion(): ?int
+    {
+        return $this->tempsCompletion;
+    }
+
+    public function setTempsCompletion(?int $tempsCompletion): self
+    {
+        $this->tempsCompletion = $tempsCompletion;
 
         return $this;
     }
