@@ -32,9 +32,11 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Type $Type = null;
 
+    #[Groups(["getAllProduit", "getProduit"])]
     #[ORM\Column(nullable: true)]
     private ?int $nbPiece = null;
 
+    #[Groups(["getAllProduit", "getProduit"])]
     #[ORM\Column(nullable: true)]
     private ?int $tempsCompletion = null;
 
