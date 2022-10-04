@@ -93,12 +93,16 @@ class ProduitController extends AbstractController
      * @param ProduitRepository $product
      * @return JsonResponse
      */
-    #[Route('/produit/{idProduit}', name: 'produit.delete', methods: ['DELETE'])]
+    #[Route('/produit/{idProduit}', name: 'produit.turnoff', methods: ['DELETE'])]
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
     public function deleteProduit(Produit $produit, EntityManagerInterface $entityManager): JsonResponse
     {
-        $produit->setStatus(false);
-        $entityManager->flush();
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        if ($produit->isStatus() == false || $produit == null) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        }else{
+            $produit->setStatus(false);
+            $entityManager->flush();
+            return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        }
     }
 }
