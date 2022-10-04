@@ -41,10 +41,23 @@ class ProduitController extends AbstractController
     //     new JsonResponse(null, Response::HTTP_NOT_FOUND, [], false);
     // }
 
+    /**
+     * Route qui renvoit le produit avec l'id passé en paramètre
+     * 
+     * @return JsonResponse
+     */
     #[Route('/produit/get/{idProduit}', name: 'produit.get', methods: ['GET'])]
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
     public function getProduitById(Produit $produit, SerializerInterface $serializer): JsonResponse
     {
+        $produitJson = $serializer->serialize($produit, 'json', ['groups' => ['getProduit']]);
+        return new JsonResponse($produitJson, Response::HTTP_OK, [], false);
+    }
+
+    #[Route('/produit/', name: 'produit.getAll', methods: ['GET'])]
+    public function getAllProduit(SerializerInterface $serializer, ProduitRepository $product): JsonResponse
+    {
+        $produit = $product->findAll();
         $produitJson = $serializer->serialize($produit, 'json', ['groups' => ['getProduit']]);
         return new JsonResponse($produitJson, Response::HTTP_OK, [], false);
     }
