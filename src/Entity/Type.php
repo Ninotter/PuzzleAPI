@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
 class Type
@@ -14,10 +15,13 @@ class Type
     #[Groups(["getAllProduit", "getProduit" , "getTypes"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Assert\Type(type: 'integer', message:"L'id doit être un entier positif supérieur à 0.")]
     #[ORM\Column]
     private ?int $id = null;
 
     #[Groups(["getAllProduit", "getProduit", "getTypes"])]
+    #[Assert\Type(type: 'string', message:"Le nom doit être une chaine de caractères")]
+    #[Assert\Length(min : 4, minMessage:"Un produit doit avoir au moins 4 caractères")]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
