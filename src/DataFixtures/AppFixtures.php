@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
             $prix = mt_rand(0,1000) / 10;
             $product->setPrix($prix);
             $product->setNiveauDifficulte(mt_rand(0,5));
-            $product->setType($lesTypes[mt_rand(0,4)]);
+            $product->setType($lesTypes[array_rand($lesTypes)]);
             $manager->persist($product);
         }
 

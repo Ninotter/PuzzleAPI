@@ -50,7 +50,7 @@ class ProduitController extends AbstractController
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
     public function getProduitById(Produit $produit, SerializerInterface $serializer): JsonResponse
     {
-        $produitJson = $serializer->serialize($produit, 'json', ['groups' => ['getProduit']]);
+        $produitJson = $serializer->serialize($produit, 'json', ['groups' => ['getAllProduit']]);
         return new JsonResponse($produitJson, Response::HTTP_OK, [], false);
     }
 
