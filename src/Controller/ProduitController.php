@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ProduitRepository;
 use Doctrine\Migrations\Configuration\Migration\JsonFile;
 use App\Entity\Produit;
+use Doctrine\ORM\EntityManager;
 use JsonSerializable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,7 +54,7 @@ class ProduitController extends AbstractController
     public function getProduitById(Produit $produit, SerializerInterface $serializer): JsonResponse
     {
         $produitJson = $serializer->serialize($produit, 'json', ['groups' => ['getAllProduit']]);
-        return new JsonResponse($produitJson, Response::HTTP_OK, [], false);
+        return new JsonResponse($produitJson, Response::HTTP_OK, [], true);
     }
 
     /**
@@ -68,6 +69,22 @@ class ProduitController extends AbstractController
     {
         $produit = $product->findAll();
         $produitJson = $serializer->serialize($produit, 'json', ['groups' => ['getProduit']]);
-        return new JsonResponse($produitJson, Response::HTTP_OK, [], false);
+        return new JsonResponse($produitJson, Response::HTTP_OK, [], true);
+    }
+
+    /**
+     * Supprime un produit
+     *
+     * @param SerializerInterface $serializer
+     * @param ProduitRepository $product
+     * @return JsonResponse
+     */
+    #[Route('/produit/delete/{idProduit}', name: 'produit.delete', methods: ['DELETE'])]
+    #[ParamConverter("produit", options : ["id" => "idProduit"])]
+    public function deleteProduit(Produit $produit, EntityManager $entityManager): JsonResponse
+    {
+        $entityManager->remove($produit);
+        $entityManager->flush();
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

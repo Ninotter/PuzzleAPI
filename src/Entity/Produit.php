@@ -32,11 +32,16 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Type $Type = null;
 
+    #[Groups(["getAllProduit", "getProduit"])]
     #[ORM\Column(nullable: true)]
     private ?int $nbPiece = null;
 
+    #[Groups(["getAllProduit", "getProduit"])]
     #[ORM\Column(nullable: true)]
     private ?int $tempsCompletion = null;
+
+    #[ORM\Column]
+    private ?bool $status = null;
 
     public function getId(): ?int
     {
@@ -111,6 +116,18 @@ class Produit
     public function setTempsCompletion(?int $tempsCompletion): self
     {
         $this->tempsCompletion = $tempsCompletion;
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

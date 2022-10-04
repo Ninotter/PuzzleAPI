@@ -5,21 +5,27 @@ namespace App\Entity;
 use App\Repository\TypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
 class Type
 {
+    #[Groups(["getAllProduit", "getProduit" , "getTypes"])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(["getAllProduit", "getProduit", "getTypes"])]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
     #[ORM\OneToMany(mappedBy: 'Type', targetEntity: Produit::class)]
     private Collection $lesProduits;
+
+    #[ORM\Column]
+    private ?bool $status = null;
 
     public function __construct()
     {
@@ -69,6 +75,18 @@ class Type
                 $lesProduit->setType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
