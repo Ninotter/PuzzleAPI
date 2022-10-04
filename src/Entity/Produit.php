@@ -40,6 +40,9 @@ class Produit
     #[ORM\Column(nullable: true)]
     private ?int $tempsCompletion = null;
 
+    #[ORM\Column]
+    private ?bool $status = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -113,6 +116,18 @@ class Produit
     public function setTempsCompletion(?int $tempsCompletion): self
     {
         $this->tempsCompletion = $tempsCompletion;
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

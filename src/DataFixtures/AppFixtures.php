@@ -27,6 +27,7 @@ class AppFixtures extends Fixture
         for ($i=0; $i < 5; $i++) { 
             $type = new Type();
             $type->setNom($this->faker->word());
+            $type->setStatus(true);
             $lesTypes[] = $type;
             $manager->persist($type);
         }
@@ -39,6 +40,7 @@ class AppFixtures extends Fixture
             $product->setNbPiece(mt_rand(1,40));
             $prix = mt_rand(30,1000) / 10;
             $product->setPrix($prix);
+            $product->setStatus(true);
             $manager->persist($product);
         }
 

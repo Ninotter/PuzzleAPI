@@ -24,6 +24,9 @@ class Type
     #[ORM\OneToMany(mappedBy: 'Type', targetEntity: Produit::class)]
     private Collection $lesProduits;
 
+    #[ORM\Column]
+    private ?bool $status = null;
+
     public function __construct()
     {
         $this->lesProduits = new ArrayCollection();
@@ -72,6 +75,18 @@ class Type
                 $lesProduit->setType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
