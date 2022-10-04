@@ -146,7 +146,7 @@ class ProduitController extends AbstractController
 
     #[Route('/produit/{idProduit}', name: 'produit.update', methods: ['PUT'])]
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
-    public function updateProduit(Produit $produit, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator): JsonResponse
+    public function updateProduit(TypeRepository $typeRepository, Produit $produit, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
         $updateProduit = $serializer->deserialize(
             $request->getContent(),
@@ -156,7 +156,10 @@ class ProduitController extends AbstractController
         );
         $updateProduit->setStatus(true);
 
-        $entityManager->persist($updateProduit);
+        $content =$request->toArray();
+        $type = $typeRepository->find($content["idType"] ?? -1);
+        $produit->setType($type);
+        $entityManager->persist($produit);
         $entityManager->flush();
 
         $location = $urlGenerator->generate('produit.get', ['idProduit' => $updateProduit->getId(), UrlGeneratorInterface::ABSOLUTE_URL ]);
