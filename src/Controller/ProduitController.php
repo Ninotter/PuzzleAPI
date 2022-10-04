@@ -95,7 +95,7 @@ class ProduitController extends AbstractController
     // }
 
     /**
-     * Met le statut d'un produit à 0
+     * Rend un Produit Inactif
      *
      * @param Produit $produit
      * @param ProduitRepository $product
@@ -116,7 +116,7 @@ class ProduitController extends AbstractController
 
 
     /**
-     * Créé un produit avec le contenu réceoptionné dans le POST
+     * Créé un produit
      *
      * @param TypeRepository $typeRepository
      * @param Request $request
@@ -161,6 +161,15 @@ class ProduitController extends AbstractController
     //     "idType": 38
     // }
 
+    /** Fonction qui update les données d'un produit 
+     * @param TypeRepository $typeRepository
+     * @param Produit $produit
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param SerializerInterface $serializer
+     * @param UrlGeneratorInterface $urlGenerator
+     * @return JsonResponse
+     */
     #[Route('/produit/{idProduit}', name: 'produit.update', methods: ['PUT'])]
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
     public function updateProduit(TypeRepository $typeRepository, Produit $produit, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator): JsonResponse
