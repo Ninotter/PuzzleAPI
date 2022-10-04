@@ -27,7 +27,7 @@ class ProduitController extends AbstractController
     // }
 
     // /**
-    //  * Route qui renvoit le produit avec l'id passé en paramètre1
+    //  * Route qui renvoit le produit avec l'id passé en paramètre
     //  * 
     //  * @return JsonResponse
     //  */
