@@ -15,18 +15,23 @@ class Produit
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(["getAllProduit", "getProduit"])]
+    #[Assert\Type(type: 'integer', message:"L'id doit être un entier positif supérieur à 0.")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(["getAllProduit", "getProduit"])]
     #[Assert\NotNull(message:"Un produit doit avoir un intitulé")]
+    #[Assert\Type(type: 'string', message:"Le nom du produit doit être une chaîne")]
+    #[Assert\Length(min : 4, minMessage:"Un produit doit avoir au moins 4 caractères")]
     private ?string $nom = null;
 
     #[Groups(["getAllProduit", "getProduit"])]
+    #[Assert\Type(type: 'float', message:"Le nom du produit doit être un chiffre flottant")]
     #[ORM\Column(nullable: true)]
     private ?float $prix = null;
 
     #[Groups(["getAllProduit", "getProduit"])]
+    #[Assert\Type(type: 'integer', message:"Le niveau de difficulté doit être un entier")]
     #[ORM\Column(nullable: true)]
     private ?int $niveauDifficulte = null;
 
@@ -36,13 +41,16 @@ class Produit
 
     #[Groups(["getAllProduit", "getProduit"])]
     #[ORM\Column(nullable: true)]
+    #[Assert\Type(type: 'integer', message:"Le nombre de pièces doit être un entier")]
     private ?int $nbPiece = null;
 
     #[Groups(["getAllProduit", "getProduit"])]
+    #[Assert\Type(type: 'integer', message:"Le temps de complétion doit être un entier")]
     #[ORM\Column(nullable: true)]
     private ?int $tempsCompletion = null;
 
     #[ORM\Column]
+    #[Assert\Type(type: 'bool', message:"Le status doit être un boolean")]
     private ?bool $status = null;
 
     public function getId(): ?int
