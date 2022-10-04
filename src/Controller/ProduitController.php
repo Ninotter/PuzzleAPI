@@ -98,7 +98,7 @@ class ProduitController extends AbstractController
      * Rend un Produit Inactif
      *
      * @param Produit $produit
-     * @param ProduitRepository $product
+     * @param EntityManagerInterface $entityManager
      * @return JsonResponse
      */
     #[Route('/produit/{idProduit}', name: 'produit.turnOff', methods: ['DELETE'])]
