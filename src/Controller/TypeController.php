@@ -24,6 +24,6 @@ class TypeController extends AbstractController
     {
         $type = $product->findAll();
         $typeJson = $serializer->serialize($type, 'json', ['groups' => ['getTypes']]);
-        return new JsonResponse($typeJson, Response::HTTP_OK, [], false);
+        return new JsonResponse($typeJson, Response::HTTP_OK, [], true);
     }
 }
