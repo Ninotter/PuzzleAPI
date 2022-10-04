@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProduitRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
@@ -18,6 +19,7 @@ class Produit
 
     #[ORM\Column(length: 255)]
     #[Groups(["getAllProduit", "getProduit"])]
+    #[Assert\NotNull(message:"Un produit doit avoir un intitulé")]
     private ?string $nom = null;
 
     #[Groups(["getAllProduit", "getProduit"])]
