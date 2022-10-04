@@ -42,8 +42,10 @@ class ProduitController extends AbstractController
     // }
 
     /**
-     * Route qui renvoit le produit avec l'id passé en paramètre
+     * Route qui renvoie le produit avec l'id passé en paramètre
      * 
+     * @param Produit $produit
+     * @param SerializerInterface $serializer
      * @return JsonResponse
      */
     #[Route('/produit/get/{idProduit}', name: 'produit.get', methods: ['GET'])]
@@ -55,7 +57,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * Route qui renvoie touts les produits
+     * Route qui renvoie tous les produits
      *
      * @param SerializerInterface $serializer
      * @param ProduitRepository $product
