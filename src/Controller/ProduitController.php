@@ -54,6 +54,13 @@ class ProduitController extends AbstractController
         return new JsonResponse($produitJson, Response::HTTP_OK, [], false);
     }
 
+    /**
+     * Route qui renvoie touts les produits
+     *
+     * @param SerializerInterface $serializer
+     * @param ProduitRepository $product
+     * @return JsonResponse
+     */
     #[Route('/produit', name: 'produit.getAll', methods: ['GET'])]
     public function getAllProduit(SerializerInterface $serializer, ProduitRepository $product): JsonResponse
     {
