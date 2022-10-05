@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\PicturesRepository;
+use App\Repository\PictureRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-#[ORM\Entity(repositoryClass: PicturesRepository::class)]
+#[ORM\Entity(repositoryClass: PictureRepository::class)]
 /**
  * @Vich\Uploadable()
  */
@@ -19,23 +20,29 @@ class Picture
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getPicture"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getPicture"])]
     #[Assert\Type(type: 'string', message:"Le nom du fichier doit être une chaîne de caractère.")]
     private ?string $realName = null;
 
+    #[Groups(["getPicture"])]
     #[ORM\Column(length: 255)]
     private ?string $realPath = null;
 
+    #[Groups(["getPicture"])]
     #[ORM\Column(length: 255)]
     #[Assert\Type(type: 'string', message:"Le path doit être une chaîne de caractère.")]
     private ?string $publicPath = null;
 
+    #[Groups(["getPicture"])]
     #[ORM\Column(length: 255)]
     #[Assert\Type(type: 'string', message:"Le mimeType doit être une chaîne de caractère.")]
     private ?string $mimeType = null;
 
+    #[Groups(["getPicture"])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $uploadDate = null;
 
