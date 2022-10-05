@@ -20,10 +20,7 @@ class PictureController extends AbstractController
     #[Route('/', name: 'app_picture')]
     public function index(): JsonResponse
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/PictureController.php',
-        ]);
+        return $this->json([]);
     }
 
     #[Route('/picture/', name: 'picture.create', methods:['POST'])]
@@ -55,10 +52,10 @@ class PictureController extends AbstractController
      */
     #[Route('/picture/{idPicture}', name: 'picture.get', methods: ['GET'])]
     #[ParamConverter("picture", options : ["id" => "idPicture"], class:'App\Entity\Picture')]
-    public function getPicture(Picture $picture, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator): JsonResponse
+    public function getPicture(Picture $picture, SerializerInterface $serializer, Request $request): JsonResponse
     {
         $relativeLocation = $picture->getPublicPath() . '/' . $picture->getRealPath();
-        $location = $urlGenerator->generate('app_picture',[], UrlGeneratorInterface::ABSOLUTE_URL);
+        $location = $request->getUriForPath('/');
         $location = $location . str_replace('/assets','assets', $relativeLocation);
 
         return new JsonResponse($serializer->serialize($picture,'json', ['groups' => 'getPicture']), Response::HTTP_OK, ['Location' => $location], true);
