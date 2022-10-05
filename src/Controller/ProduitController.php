@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use JsonSerializable;
 use App\Entity\Produit;
-use App\Repository\ProduitRepository;
 use App\Repository\TypeRepository;
+use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +15,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Migrations\Configuration\Migration\JsonFile;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProduitController extends AbstractController
 {
@@ -127,6 +128,7 @@ class ProduitController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/produit', name: 'produit.create', methods: ['POST'])]
+    #[IsGranted('ADMIN')]
     public function createProduit(TypeRepository $typeRepository, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator): JsonResponse
     {
         $produit = $serializer->deserialize(
