@@ -7,6 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: PicturesRepository::class)]
 /**
@@ -20,21 +22,25 @@ class Picture
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Type(type: 'string', message:"Le nom du fichier doit être une chaîne de caractère.")]
     private ?string $realName = null;
 
     #[ORM\Column(length: 255)]
     private ?string $realPath = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Type(type: 'string', message:"Le path doit être une chaîne de caractère.")]
     private ?string $publicPath = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Type(type: 'string', message:"Le mimeType doit être une chaîne de caractère.")]
     private ?string $mimeType = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $uploadDate = null;
 
     #[ORM\Column]
+    #[Assert\Type(type: 'bool', message:"Le status doit être un boolean.")]
     private ?bool $status = null;
 
     /**
