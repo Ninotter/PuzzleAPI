@@ -2,12 +2,14 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Produit;
-use App\Entity\Type;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use App\Entity\Type;
+use App\Entity\User;
 use Faker\Generator;
+use App\Entity\Produit;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -18,11 +20,36 @@ class AppFixtures extends Fixture
      */
     private Generator $faker;
 
-    public function __construct(){
+    /**
+     * Classe hasheant le password
+     *
+     * @var UserPasswordHasherInterface
+     */
+    private $userPasswordHasher;
+
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher){
         $this->faker = Factory::create('CC3');
+        $this->userPasswordHasher = $userPasswordHasher;
     }
     public function load(ObjectManager $manager): void
     {
+
+        //Authentified Users
+        for ($i=0; $i < 10; $i++) { 
+            $userUser = new User();
+            $password = $this->faker->password(2,6);
+            $userUser->setUsername($this->faker->username() .'@'.$password);
+            $userUser->setRoles(["USER"]);
+            $userUser->setPassword($this->userPasswordHasher->hashPassword($userUser, $password));
+            $manager->persist($userUser);
+        }
+
+        $userAdmin = new User();
+        $userAdmin->setUsername("admin");
+        $userAdmin->setRoles(["ADMIN"]);
+        $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, "password"));
+        $manager->persist($userAdmin);
+
         $lesTypes = array();
         for ($i=0; $i < 5; $i++) { 
             $type = new Type();
