@@ -98,7 +98,7 @@ class ProduitController extends AbstractController
      * Rend un Produit Inactif
      *
      * @param Produit $produit
-     * @param ProduitRepository $product
+     * @param EntityManagerInterface $entityManager
      * @return JsonResponse
      */
     #[Route('/produit/{idProduit}', name: 'produit.turnOff', methods: ['DELETE'])]
@@ -136,7 +136,7 @@ class ProduitController extends AbstractController
         );
         $produit->setStatus(true);
 
-        $content =$request->toArray();
+        $content = $request->toArray();
         $type = $typeRepository->find($content["idType"] ?? -1);
         $produit->setType($type);
         $errors = $validator->validate($produit);
