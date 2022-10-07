@@ -67,6 +67,8 @@ class AppFixtures extends Fixture
             $product->setNbPiece(mt_rand(1,40));
             $prix = mt_rand(30,1000) / 10;
             $product->setPrix($prix);
+            $product->setDateCreation($this->faker->dateTime());
+            $product->setPaysOrigine($this->faker->countryISOAlpha3());
             $product->setStatus(true);
             $manager->persist($product);
         }
