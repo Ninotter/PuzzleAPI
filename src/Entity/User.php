@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,6 +28,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\ManyToMany(targetEntity: Produit::class)]
+    private Collection $idProduit;
+
+    public function __construct()
+    {
+        $this->idProduit = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -95,5 +105,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getIdProduit(): Collection
+    {
+        return $this->idProduit;
+    }
+
+    public function addIdProduit(Produit $idProduit): self
+    {
+        if (!$this->idProduit->contains($idProduit)) {
+            $this->idProduit->add($idProduit);
+        }
+
+        return $this;
+    }
+
+    public function removeIdProduit(Produit $idProduit): self
+    {
+        $this->idProduit->removeElement($idProduit);
+
+        return $this;
     }
 }
