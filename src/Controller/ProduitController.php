@@ -22,6 +22,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class ProduitController extends AbstractController
 {
@@ -73,9 +75,15 @@ class ProduitController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/produit', name: 'produit.getAll', methods: ['GET'])]
-    public function getAllProduit(SerializerInterface $serializer, ProduitRepository $product): JsonResponse
+    public function getAllProduit(SerializerInterface $serializer, ProduitRepository $product, TagAwareCacheInterface $cache): JsonResponse
     {
         $produit = $product->findAll();
+        $produitJson = $cache->get("getAllProduits", function (ItemInterface $item) use ($serializer, $product){
+            $item->tag("produitCache");
+            echo "mise en cache";
+            $cours = $product->findAll();
+            return $serializer->serialize($cours, 'json', ["groups" => 'getAllProduit']);
+        });
         $produitJson = $serializer->serialize($produit, 'json', ['groups' => ['getProduit']]);
         return new JsonResponse($produitJson, Response::HTTP_OK, [], true);
     }
@@ -105,8 +113,9 @@ class ProduitController extends AbstractController
      */
     #[Route('/produit/{idProduit}', name: 'produit.turnOff', methods: ['DELETE'])]
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
-    public function deleteProduit(Produit $produit, EntityManagerInterface $entityManager): JsonResponse
+    public function deleteProduit(Produit $produit, EntityManagerInterface $entityManager, TagAwareCacheInterface $cache): JsonResponse
     {
+        $cache->invalidateTags(["produitCache"]);
         if ($produit->isStatus() == false || $produit == null) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }else{
