@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Produit;
 use DatePeriod;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -50,11 +51,13 @@ class ProduitRepository extends ServiceEntityRepository
     }
 
     public function getProduitsByDatePeriod(DatePeriod $dates): array{
+        $dateDebut = DateTimeImmutable::createFromInterface($dates->getStartDate());
+        $dateFin = DateTimeImmutable::createFromInterface($dates->getEndDate());
         return $this->createQueryBuilder('p')
            ->andWhere('p.status = true')
            ->andWhere('p.date_creation BETWEEN :dateDebut AND :dateFin')
-           ->setParameter('dateDebut', $dates->getStartDate())
-           ->setParameter('dateFin', $dates->getEndDate())
+           ->setParameter('dateDebut', $dateDebut)
+           ->setParameter('dateFin', $dateFin)
            ->orderBy('date_creation.id', 'ASC')
            ->getQuery()
            ->getResult()
