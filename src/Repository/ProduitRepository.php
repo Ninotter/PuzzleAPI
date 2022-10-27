@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Produit;
+use DatePeriod;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -43,6 +44,18 @@ class ProduitRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
            ->andWhere('p.status = false')
            ->orderBy('p.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+    }
+
+    public function getProduitsByDatePeriod(DatePeriod $dates): array{
+        return $this->createQueryBuilder('p')
+           ->andWhere('p.status = true')
+           ->andWhere('p.date_creation BETWEEN :dateDebut AND :dateFin')
+           ->setParameter('dateDebut', $dates->getStartDate())
+           ->setParameter('dateFin', $dates->getEndDate())
+           ->orderBy('date_creation.id', 'ASC')
            ->getQuery()
            ->getResult()
        ;
