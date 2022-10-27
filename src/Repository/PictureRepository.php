@@ -39,6 +39,15 @@ class PictureRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAllPictureByStatus(): array{
+        return $this->createQueryBuilder('p')
+           ->andWhere('p.status = false')
+           ->orderBy('p.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+    }
+
 //    /**
 //     * @return Picture[] Returns an array of Picture objects
 //     */

@@ -39,6 +39,15 @@ class ProduitRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAllProduitByStatus(): array{
+        return $this->createQueryBuilder('p')
+           ->andWhere('p.status = false')
+           ->orderBy('p.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+    }
+
 //    /**
 //     * @return Produit[] Returns an array of Produit objects
 //     */

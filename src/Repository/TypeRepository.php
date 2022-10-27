@@ -39,6 +39,15 @@ class TypeRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAllTypeByStatus(): array{
+        return $this->createQueryBuilder('p')
+           ->andWhere('t.status = false')
+           ->orderBy('t.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+    }
+
 //    /**
 //     * @return Type[] Returns an array of Type objects
 //     */
