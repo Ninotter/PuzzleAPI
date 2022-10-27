@@ -39,7 +39,7 @@ class TypeRepository extends ServiceEntityRepository
         }
     }
 
-    public function getAllTypeByStatus(): array{
+    public function getDeletedTypes(): array{
         return $this->createQueryBuilder('p')
            ->andWhere('t.status = false')
            ->orderBy('t.id', 'ASC')

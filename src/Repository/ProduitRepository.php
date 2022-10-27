@@ -39,7 +39,7 @@ class ProduitRepository extends ServiceEntityRepository
         }
     }
 
-    public function getAllProduitByStatus(): array{
+    public function getDeletedProduits(): array{
         return $this->createQueryBuilder('p')
            ->andWhere('p.status = false')
            ->orderBy('p.id', 'ASC')

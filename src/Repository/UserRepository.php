@@ -56,7 +56,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->add($user, true);
     }
 
-    public function getAllTypeByStatus(): array{
+    public function getDeletedUsers(): array{
         return $this->createQueryBuilder('p')
            ->andWhere('u.status = false')
            ->orderBy('u.id', 'ASC')

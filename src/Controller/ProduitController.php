@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use JsonSerializable;
 use App\Entity\Produit;
+use Doctrine\ORM\EntityManager;
 use App\Repository\TypeRepository;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -115,6 +116,14 @@ class ProduitController extends AbstractController
         }
     }
 
+    #[Route('/deleted/produit', name: 'produit.turnedOff', methods: ['GET'])]
+    public function getDeletedProduits(SerializerInterface $serializer, ProduitRepository $product): JsonResponse
+    {
+        $deletedProduits = $product->getDeletedProduits();
+        $deletedProduitsJson = $serializer->serialize($deletedProduits, 'json', ['groups' => ['getProduit']]);
+        return new JsonResponse($deletedProduitsJson, Response::HTTP_OK, [], true);
+    }
+
 
     /**
      * Créé un produit
@@ -128,7 +137,7 @@ class ProduitController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/produit', name: 'produit.create', methods: ['POST'])]
-    #[IsGranted(['ADMIN'], message:"T'as pas le droit")]
+    #[IsGranted("ADMIN", message:"no access")]
     public function createProduit(TypeRepository $typeRepository, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator): JsonResponse
     {
         $produit = $serializer->deserialize(

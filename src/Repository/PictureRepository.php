@@ -39,7 +39,7 @@ class PictureRepository extends ServiceEntityRepository
         }
     }
 
-    public function getAllPictureByStatus(): array{
+    public function getDeletedPictures(): array{
         return $this->createQueryBuilder('p')
            ->andWhere('p.status = false')
            ->orderBy('p.id', 'ASC')
