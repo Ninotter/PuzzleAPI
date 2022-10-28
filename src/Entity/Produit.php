@@ -56,6 +56,7 @@ class Produit
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateCreation = null;
 
+    #[Groups(["getAllProduit", "getProduit"])]
     #[Assert\Type(type: 'string', message:"Le codeCountry doit être une chaîne de caractères")]
     #[Assert\Regex(
         pattern: '/^A(BW|FG|GO|IA|L[AB]|ND|R[EGM]|SM|T[A
