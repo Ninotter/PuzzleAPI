@@ -8,20 +8,24 @@ use Doctrine\ORM\EntityManager;
 use App\Repository\TypeRepository;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Migrations\Configuration\Migration\JsonFile;
+use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerInterface;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerContext;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Serializer\Serializer as SerializerSerializer;
+use Symfony\Component\Serializer\SerializerInterface as SerializerSerializerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
@@ -63,13 +67,16 @@ class ProduitController extends AbstractController
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
     public function getProduitById(Produit $produit, SerializerInterface $serializer): JsonResponse
     {
-        $produitJson = $serializer->serialize($produit, 'json', ['groups' => ['getAllProduit']]);
+        $context = SerializationContext::create()->setGroups(['getProduit']);
+        $produitJson = $serializer->serialize($produit, 'json', $context);
         return new JsonResponse($produitJson, Response::HTTP_OK, [], true);
     }
 
     /**
      * Route qui renvoie tous les produits
-     *
+     * 
+
+     * )
      * @param SerializerInterface $serializer
      * @param ProduitRepository $product
      * @return JsonResponse
@@ -82,9 +89,9 @@ class ProduitController extends AbstractController
             $item->tag("produitCache");
             echo "mise en cache";
             $cours = $product->findAll();
-            return $serializer->serialize($cours, 'json', ["groups" => 'getAllProduit']);
+            $context = SerializationContext::create()->setGroups(['getAllProduit']);
+            return $serializer->serialize($cours, 'json', $context);
         });
-        $produitJson = $serializer->serialize($produit, 'json', ['groups' => ['getProduit']]);
         return new JsonResponse($produitJson, Response::HTTP_OK, [], true);
     }
 
@@ -129,7 +136,8 @@ class ProduitController extends AbstractController
     public function getDeletedProduits(SerializerInterface $serializer, ProduitRepository $product): JsonResponse
     {
         $deletedProduits = $product->getDeletedProduits();
-        $deletedProduitsJson = $serializer->serialize($deletedProduits, 'json', ['groups' => ['getProduit']]);
+        $context = SerializationContext::create()->setGroups(['getProduit']);
+        $deletedProduitsJson = $serializer->serialize($deletedProduits, 'json', $context);
         return new JsonResponse($deletedProduitsJson, Response::HTTP_OK, [], true);
     }
 
@@ -167,8 +175,8 @@ class ProduitController extends AbstractController
         $entityManager->flush();
 
         $location = $urlGenerator->generate('produit.get', ['idProduit' => $produit->getId(), UrlGeneratorInterface::ABSOLUTE_URL ]);
-
-        $jsonProduit = $serializer->serialize($produit, 'json', ['groups' => 'getProduit']);
+        $context = SerializationContext::create()->setGroups(['getAllProduit']);
+        $jsonProduit = $serializer->serialize($produit, 'json', $context);
         return new JsonResponse($jsonProduit, Response::HTTP_CREATED, ["Location" => $location], true);
     }
     //TESTS RAW BODY POSTMAN
@@ -197,9 +205,17 @@ class ProduitController extends AbstractController
         $updateProduit = $serializer->deserialize(
             $request->getContent(),
             Produit::class,
-            'json',
-            [AbstractNormalizer::OBJECT_TO_POPULATE => $produit]
+            'json'
         );
+        $content = $request->toArray();
+        $updateProduit->setNom($updateProduit->getNom() ?? $produit->getNom());
+        $updateProduit->setPrix($updateProduit->getPrix() ?? $produit->getPrix());
+        $updateProduit->setNiveauDifficulte($updateProduit->getNiveauDifficulte() ?? $produit->getNiveauDifficulte());
+        $updateProduit->setNbPiece($updateProduit->getNbPiece() ?? $produit->getNbPiece());
+        $updateProduit->setTempsCompletion($updateProduit->getTempsCompletion() ?? $produit->getTempsCompletion());
+        $updateProduit->setDateCreation($updateProduit->getDateCreation() ?? $produit->getDateCreation());
+        $updateProduit->setPaysOrigine($updateProduit->getPaysOrigine() ?? $produit->getPaysOrigine());
+
         $updateProduit->setStatus(true);
 
         $content =$request->toArray();
@@ -209,8 +225,9 @@ class ProduitController extends AbstractController
         $entityManager->flush();
 
         $location = $urlGenerator->generate('produit.get', ['idProduit' => $updateProduit->getId(), UrlGeneratorInterface::ABSOLUTE_URL ]);
+        $context = SerializationContext::create()->setGroups(['getProduit']);
 
-        $jsonProduit = $serializer->serialize($produit, 'json', ['groups' => 'getProduit']);
+        $jsonProduit = $serializer->serialize($produit, 'json', $context);
         return new JsonResponse($jsonProduit, Response::HTTP_CREATED, ["Location" => $location], true);
     }
 }
