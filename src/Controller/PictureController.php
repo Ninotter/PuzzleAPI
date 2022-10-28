@@ -17,12 +17,6 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class PictureController extends AbstractController
 {
-    #[Route('/', name: 'app_picture')]
-    public function index(): JsonResponse
-    {
-        return $this->json([]);
-    }
-
     #[Route('/picture/', name: 'picture.create', methods:['POST'])]
     public function createPicture(Request $request, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, SerializerInterface $serializer): JsonResponse
     {
