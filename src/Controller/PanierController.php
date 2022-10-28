@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class PanierController extends AbstractController
 {
     /**
-     * Undocumented function
+     * Ajoute un produit défini dans le body à un user défini dans le body
      *
      * @param User $user
      * @param Produit $produit

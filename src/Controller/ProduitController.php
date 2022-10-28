@@ -31,16 +31,6 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class ProduitController extends AbstractController
 {
-
-    // #[Route('/produit', name: 'app_produit')]
-    // public function index(): JsonResponse
-    // {
-    //     return $this->json([
-    //         'message' => 'Welcome to your new controller!',
-    //         'path' => 'src/Controller/ProduitController.php',
-    //     ]);
-    // }
-
     // /**
     //  * Route qui renvoit le produit avec l'id passé en paramètre
     //  * 
@@ -73,10 +63,8 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * Route qui renvoie tous les produits
+     * Renvoie tous les produits
      * 
-
-     * )
      * @param SerializerInterface $serializer
      * @param ProduitRepository $product
      * @return JsonResponse
@@ -132,6 +120,13 @@ class ProduitController extends AbstractController
         }
     }
 
+    /**
+     * Retourne les produits supprimés
+     *
+     * @param SerializerInterface $serializer
+     * @param ProduitRepository $product
+     * @return JsonResponse
+     */
     #[Route('/deleted/produit', name: 'produit.turnedOff', methods: ['GET'])]
     public function getDeletedProduits(SerializerInterface $serializer, ProduitRepository $product): JsonResponse
     {
