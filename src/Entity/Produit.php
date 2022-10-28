@@ -7,22 +7,27 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitRepository;
 // use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Hateoas\Configuration\Annotation as Hateoas;
+// use Hateoas\Configuration\Annotation as Hateoas;
+use Hateoas\Configuration\Annotation\Exclusion;
+use Hateoas\Configuration\Annotation\Relation;
+use Hateoas\Configuration\Annotation\Route;
 use JMS\Serializer\Annotation\Groups;
 
 /**
-* @Hateoas\Relation(
-* "self",
-* href= @Hateoas\Route(
-*  "produit.get",
-*  parameters = {"idProduit" = "expr(object.getId())"}
-*  exclusion = @Hateoas\Exclusion(groups="getProduit")  
+* @Relation(
+*   "self",
+*   href= @Route(
+*       "produit.get",
+*       parameters = {"idProduit" = "expr(object.getId())"}
+*   ),
+*   exclusion = @Exclusion(groups="getProduit")
 * )
-* @Hateoas\Relation(
-* "up",
-* href= @Hateoas\Route(
-*  "produit.getAll", 
-*  exclusion = @Hateoas\Exclusion(groups="getAllProduit")  
+* @Relation(
+*   "up",
+*   href= @Route(
+*       "produit.getAll"
+*   ),
+*   exclusion = @Exclusion(groups="getAllProduit")
 * )
 */
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]

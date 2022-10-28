@@ -208,13 +208,17 @@ class ProduitController extends AbstractController
             'json'
         );
         $content = $request->toArray();
-        $updateProduit->setNom($updateProduit->getNom() ?? $produit->getNom());
-        $updateProduit->setPrix($updateProduit->getPrix() ?? $produit->getPrix());
-        $updateProduit->setNiveauDifficulte($updateProduit->getNiveauDifficulte() ?? $produit->getNiveauDifficulte());
-        $updateProduit->setNbPiece($updateProduit->getNbPiece() ?? $produit->getNbPiece());
-        $updateProduit->setTempsCompletion($updateProduit->getTempsCompletion() ?? $produit->getTempsCompletion());
-        $updateProduit->setDateCreation($updateProduit->getDateCreation() ?? $produit->getDateCreation());
-        $updateProduit->setPaysOrigine($updateProduit->getPaysOrigine() ?? $produit->getPaysOrigine());
+        $produit->setNom($updateProduit->getNom() ?? $produit->getNom());
+        $produit->setPrix($updateProduit->getPrix() ?? $produit->getPrix());
+        $produit->setNiveauDifficulte($updateProduit->getNiveauDifficulte() ?? $produit->getNiveauDifficulte());
+        $produit->setNbPiece($updateProduit->getNbPiece() ?? $produit->getNbPiece());
+        $produit->setTempsCompletion($updateProduit->getTempsCompletion() ?? $produit->getTempsCompletion());
+        $produit->setDateCreation($updateProduit->getDateCreation() ?? $produit->getDateCreation());
+        $produit->setPaysOrigine($updateProduit->getPaysOrigine() ?? $produit->getPaysOrigine());
+        // a refaire si besoin plus tard, quand produit aura des sous-objets
+        // if(array_key_exists('idPanier', $content) && $content["idPanier"]){
+        //     $panierRepository->find($content["idPanier"]);
+        // }
 
         $updateProduit->setStatus(true);
 
