@@ -5,9 +5,26 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitRepository;
-use Symfony\Component\Serializer\Annotation\Groups;
+// use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation\Groups;
 
+/**
+* @Hateoas\Relation(
+* "self",
+* href= @Hateoas\Route(
+*  "produit.get",
+*  parameters = {"idProduit" = "expr(object.getId())"}
+*  exclusion = @Hateoas\Exclusion(groups="getProduit")  
+* )
+* @Hateoas\Relation(
+* "up",
+* href= @Hateoas\Route(
+*  "produit.getAll", 
+*  exclusion = @Hateoas\Exclusion(groups="getAllProduit")  
+* )
+*/
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
 {
