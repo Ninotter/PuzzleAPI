@@ -27,7 +27,7 @@ use JMS\Serializer\Annotation\Groups;
 *   href= @Route(
 *       "produit.getAll"
 *   ),
-*   exclusion = @Exclusion(groups="getAllProduit")
+*   exclusion = @Exclusion(groups="getProduit")
 * )
 */
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
