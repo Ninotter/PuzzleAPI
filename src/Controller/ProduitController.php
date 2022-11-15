@@ -60,7 +60,6 @@ class ProduitController extends AbstractController
         $produit = $product->findAll();
         $produitJson = $cache->get("getAllProduits", function (ItemInterface $item) use ($serializer, $product){
             $item->tag("produitCache");
-            echo "mise en cache";
             $cours = $product->findAll();
             $context = SerializationContext::create()->setGroups(['getAllProduit']);
             return $serializer->serialize($cours, 'json', $context);
