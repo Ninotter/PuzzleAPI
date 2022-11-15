@@ -31,21 +31,6 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class ProduitController extends AbstractController
 {
-    // /**
-    //  * Route qui renvoit le produit avec l'id passé en paramètre
-    //  * 
-    //  * @return JsonResponse
-    //  */
-    // #[Route('/produit/get/{id}', name: 'produit.get', methods: ['GET'])]
-    // public function getProduitById(int $id, ProduitRepository $product, SerializerInterface $serializer): JsonResponse
-    // {
-    //     $produit = $product->find($id);
-    //     $produitJson = $serializer->serialize($produit, 'json', ['Type' => ['id', 'nom']]);
-    //     return $produit ?
-    //     new JsonResponse($produitJson, Response::HTTP_OK, [], false) : 
-    //     new JsonResponse(null, Response::HTTP_NOT_FOUND, [], false);
-    // }
-
     /**
      * Route qui renvoie le produit avec l'id passé en paramètre
      * 

@@ -12,6 +12,7 @@ use Hateoas\Configuration\Annotation\Exclusion;
 use Hateoas\Configuration\Annotation\Relation;
 use Hateoas\Configuration\Annotation\Route;
 use JMS\Serializer\Annotation\Groups;
+use OpenApi\Attributes as OA;
 
 /**
 * @Relation(
@@ -45,16 +46,19 @@ class Produit
     #[Assert\NotNull(message:"Un produit doit avoir un intitulé")]
     #[Assert\Type(type: 'string', message:"Le nom du produit doit être une chaîne")]
     #[Assert\Length(min : 4, minMessage:"Un produit doit avoir au moins 4 caractères")]
+    #[OA\Property(type: "string")]
     private ?string $nom = null;
 
     #[Groups(["getAllProduit", "getProduit"])]
     #[Assert\Type(type: 'float', message:"Le nom du produit doit être un chiffre flottant")]
     #[ORM\Column(nullable: true)]
+    #[OA\Property(type: "float")]
     private ?float $prix = null;
 
     #[Groups(["getAllProduit", "getProduit"])]
     #[Assert\Type(type: 'integer', message:"Le niveau de difficulté doit être un entier")]
     #[ORM\Column(nullable: true)]
+    #[OA\Property(type: "integer")]
     private ?int $niveauDifficulte = null;
 
     #[ORM\ManyToOne(inversedBy: 'lesProduits')]
@@ -64,6 +68,7 @@ class Produit
     #[Groups(["getAllProduit", "getProduit"])]
     #[ORM\Column(nullable: true)]
     #[Assert\Type(type: 'integer', message:"Le nombre de pièces doit être un entier")]
+    #[OA\Property(type: "integer")]
     private ?int $nbPiece = null;
 
     #[Groups(["getAllProduit", "getProduit"])]
