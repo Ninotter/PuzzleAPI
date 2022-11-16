@@ -29,12 +29,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\ManyToMany(targetEntity: Produit::class)]
-    private Collection $idProduit;
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Panier::class, orphanRemoval: true)]
+    private Collection $paniers;
 
     public function __construct()
     {
         $this->idProduit = new ArrayCollection();
+        $this->paniers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,25 +109,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Produit>
+     * @return Collection<int, Panier>
      */
-    public function getIdProduit(): Collection
+    public function getPaniers(): Collection
     {
-        return $this->idProduit;
+        return $this->paniers;
     }
 
-    public function addIdProduit(Produit $idProduit): self
+    public function addPanier(Panier $panier): self
     {
-        if (!$this->idProduit->contains($idProduit)) {
-            $this->idProduit->add($idProduit);
+        if (!$this->paniers->contains($panier)) {
+            $this->paniers->add($panier);
+            $panier->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeIdProduit(Produit $idProduit): self
+    public function removePanier(Panier $panier): self
     {
-        $this->idProduit->removeElement($idProduit);
+        if ($this->paniers->removeElement($panier)) {
+            // set the owning side to null (unless already changed)
+            if ($panier->getUser() === $this) {
+                $panier->setUser(null);
+            }
+        }
 
         return $this;
     }

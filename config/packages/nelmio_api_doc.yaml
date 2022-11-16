@@ -2,8 +2,8 @@ nelmio_api_doc:
   models: { use_jms: false }
   documentation:
     info:
-      title: BileMoAPI
-      description: This is an awesome API REST for BileMo!
+      title: PuzzleAPI
+      description: La solide API des puzzles
       version: 1.0.0
     components:
       securitySchemes:
@@ -16,7 +16,7 @@ nelmio_api_doc:
       - Bearer: []
  
     paths:
-      /api/login_check:
+      /login_check:
         post:
           tags:
             - Login
@@ -41,15 +41,13 @@ nelmio_api_doc:
                     properties:
                       token:
                         type: string
-                      refresh_token:
-                        type: string
             "401":
               description: Invalid credentials
             "400":
               description: Invalid JSON.
           security: []
  
-      /api/token/refresh:
+      /token/refresh:
         post:
           tags:
             - Login
