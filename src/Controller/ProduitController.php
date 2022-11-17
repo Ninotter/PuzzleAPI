@@ -28,6 +28,7 @@ use Symfony\Component\Serializer\Serializer as SerializerSerializer;
 use Symfony\Component\Serializer\SerializerInterface as SerializerSerializerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use OpenApi\Attributes as OA;
 
 class ProduitController extends AbstractController
 {
@@ -49,11 +50,12 @@ class ProduitController extends AbstractController
 
     /**
      * Renvoie tous les produits avec un filtre
-     * 
-     * @param SerializerInterface $serializer
-     * @param ProduitRepository $product
-     * @return JsonResponse
      */
+    #[OA\Parameter(name: 'nom',in: 'query',description: 'Nom à filtrer',schema: new OA\Schema(type: 'string'))]
+    #[OA\Parameter(name: 'prix',in: 'query',description: 'Trie les prix par ordre croissant/décroissant(ASC/DESC)',schema: new OA\Schema(type: 'string', enum:['ASC', 'DESC']))]
+    #[OA\Parameter(name: 'niveau_difficulte',in: 'query',description: 'Trie le niveau de difficulté par ordre croissant/décroissant(ASC/DESC)',schema: new OA\Schema(type: 'string',enum:['ASC', 'DESC']))]
+    #[OA\Parameter(name: 'nb_piece',in: 'query',description: 'Trie le nombre de pièce par ordre croissant/décroissant(ASC/DESC)',schema: new OA\Schema(type: 'string',enum:['ASC', 'DESC']))]
+    #[OA\Parameter(name: 'temps_completion',in: 'query',description: 'Trie les temps de complétion par ordre croissant/décroissant(ASC/DESC)',schema: new OA\Schema(type: 'string',enum:['ASC', 'DESC']))]
     #[Route('/produit', name: 'produit.getAll', methods: ['GET'])]
     public function getAllProduit(SerializerInterface $serializer, ProduitRepository $produitRepository, TagAwareCacheInterface $cache,Request $request): JsonResponse
     {
@@ -93,11 +95,7 @@ class ProduitController extends AbstractController
     // }
 
     /**
-     * Rend un Produit Inactif
-     *
-     * @param Produit $produit
-     * @param EntityManagerInterface $entityManager
-     * @return JsonResponse
+     * Rend un produit inactif
      */
     #[Route('/produit/{idProduit}', name: 'produit.turnOff', methods: ['DELETE'])]
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
@@ -203,10 +201,6 @@ class ProduitController extends AbstractController
         $produit->setTempsCompletion($updateProduit->getTempsCompletion() ?? $produit->getTempsCompletion());
         $produit->setDateCreation($updateProduit->getDateCreation() ?? $produit->getDateCreation());
         $produit->setPaysOrigine($updateProduit->getPaysOrigine() ?? $produit->getPaysOrigine());
-        // a refaire si besoin plus tard, quand produit aura des sous-objets
-        // if(array_key_exists('idPanier', $content) && $content["idPanier"]){
-        //     $panierRepository->find($content["idPanier"]);
-        // }
 
         $updateProduit->setStatus(true);
 

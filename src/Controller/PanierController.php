@@ -14,13 +14,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
-// use JMS\Serializer\Serializer;
-// use JMS\Serializer\SerializerInterface;
-// use JMS\Serializer\SerializerContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use OpenApi\Attributes as OA;
 
 class PanierController extends AbstractController
 {
@@ -68,14 +66,16 @@ class PanierController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/panier/supprimer', name: 'supprimerLignePanier',methods: ['POST'])]
+    #[Route('/panier/supprimer', name: 'supprimerLignePanier',methods: ['DELETE'])]
+    #[OA\Parameter(name: 'idProduit',in: 'query',description: 'Produit(s) à retirer du panier',schema: new OA\Schema(type: 'integer'))]
+    #[OA\Parameter(name: 'idUser',in: 'query',description: 'Id de l\'user à qui retirer le(s) produit(s)',schema: new OA\Schema(type: 'integer'))]
+    #[OA\Parameter(name: 'quantity',in: 'query',description: 'Quantité de produit à retirer',schema: new OA\Schema(type: 'integer'))]
     public function removeFromPanier(Request $request, PanierRepository $panierRepo, ProduitRepository $produitRepo, EntityManagerInterface $entityManager, SerializerInterface $serializer): JsonResponse
     {
         //Les données ne doivent pas avoir status 0
-        $requestContent = $request->toArray();
-        $produit = $produitRepo->find($requestContent["idProduit"]);
-        $panier = $panierRepo->getUserActivePanier($requestContent["idUser"]);
-        $quantity = $requestContent["quantity"];
+        $produit = $produitRepo->find($request->get("idProduit"));
+        $panier = $panierRepo->getUserActivePanier($request->get("idUser"));
+        $quantity = $request->get("quantity");
 
         $lignesPanierList = $panier->getLignesPanier();
         $lp = null;
@@ -117,6 +117,7 @@ class PanierController extends AbstractController
      * @param User $user
      * @return JsonResponse
      */
+    #[OA\Parameter(name: 'idUser',in: 'query',description: 'id de l\'user à qui valider le panier',schema: new OA\Schema(type: 'string'))]
     #[Route('/panier/valider', name: 'validerPanier',methods: ['POST'])]
     public function validerPanier(Request $request, PanierRepository $panierRepo, UserRepository $userRepo, EntityManagerInterface $entityManager, SerializerInterface $serializer): JsonResponse
     {

@@ -64,31 +64,28 @@ class ProduitRepository extends ServiceEntityRepository
        ;
     }
 
+    /**
+     * Renvoie tous les produits actifs avec les filtres en paramètre
+     *
+     * @param string $nom
+     * @param string $prix
+     * @param string $niveauDifficulte
+     * @param string $nbPiece
+     * @param string $tempsCompletion
+     * @return array
+     */
     public function getAllProduitsFiltre(string $nom = "", string $prix = "", string $niveauDifficulte = "", string $nbPiece ="", string $tempsCompletion = "") : array{
-        $nom = '%' . $nom . '%';
         $req = $this->createQueryBuilder('p')
-           ->where('p.status = true')
-           ->andWhere('p.nom LIKE :nomfiltre')
-           ->setParameter('nomfiltre', $nom)
-           ->orderBy('p.prix', $prix)
-           ->addOrderBy('p.niveauDifficulte', $niveauDifficulte)
-           ->addOrderBy('p.nbPiece', $nbPiece)
-           ->addOrderBy('p.tempsCompletion', $tempsCompletion)
-           ->getQuery()
-       ;
-    //    $sql = "SELECT * FROM Produit p WHERE p.status = true";
-    //    $sql .= $nom ? " AND p.nom like :nom" :  "";
-    //    $sql .= $prix ? " ORDER BY prix :prix" :  "";
-    //    $sql .= $niveauDifficulte ? " order by niveau_difficulte :niveaudifficulte" :  " ";
-    //    $sql .= $nbPiece ? " order by nb_piece :nbpiece " :  "";
-    //    $sql .= $tempsCompletion ? " order by temps_completion :tempscompletion" :  "";
-    //    $req = $this->getEntityManager()->createQuery($sql);
-    //    if($nom) $req->setParameter(":nom", $nom);
-    //    if($prix) $req->setParameter(":prix", $prix);
-    //    if($niveauDifficulte) $req->setParameter(":niveaudifficulte", $niveauDifficulte);
-    //    if($nbPiece) $req->setParameter("nbpiece" ,$nbPiece);
-    //    if($tempsCompletion) $req->setParameter(":tempscompletion" ,$tempsCompletion);
-       return $req->getResult();
+           ->where('p.status = true');
+        if ($nom) {
+        $req->andWhere('p.nom LIKE :nomfiltre')
+        ->setParameter('nomfiltre', '%' . $nom . '%');
+        }
+        if(strtoupper($prix) == "ASC" || strtoupper($prix) == "DESC")$req->addOrderBy('p.prix', $prix);
+        if(strtoupper($niveauDifficulte) == "ASC" || strtoupper($niveauDifficulte) == "DESC")$req->addOrderBy('p.niveauDifficulte', $niveauDifficulte);
+        if(strtoupper($nbPiece) == "ASC" || strtoupper($nbPiece) == "DESC")$req->addOrderBy('p.nbPiece', $nbPiece);
+        if(strtoupper($tempsCompletion) == "ASC" || strtoupper($tempsCompletion) == "DESC")$req->addOrderBy('p.tempsCompletion', $tempsCompletion);
+        return $req->getQuery()->getResult();
     }
 
 //    /**
