@@ -39,14 +39,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->idProduit = new ArrayCollection();
         $this->paniers = new ArrayCollection();
-        $this->newDefaultPanier();
+        // $this->newDefaultPanier();
     }
 
-    public function newDefaultPanier(){
-        $panier = new Panier();
-        $panier->setUser($this);
-        $this->paniers->add($panier);
-    }
+    // public function newDefaultPanier(){
+    //     $panier = new Panier();
+    //     $panier->setUser($this);
+    //     $this->paniers->add($panier);
+    // }
 
     public function getId(): ?int
     {

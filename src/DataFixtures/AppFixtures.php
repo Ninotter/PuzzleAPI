@@ -35,7 +35,6 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
-
         $lesTypes = array();
         for ($i=0; $i < 5; $i++) { 
             $type = new Type();
@@ -44,6 +43,7 @@ class AppFixtures extends Fixture
             $lesTypes[] = $type;
             $manager->persist($type);
         }
+
         $lesProduits = array();
         for ($i=0; $i < 20; $i++) { 
             $product = new Produit();
@@ -68,15 +68,16 @@ class AppFixtures extends Fixture
             $userUser->setUsername($this->faker->username() .'@'.$password);
             $userUser->setRoles(["USER"]);
             $userUser->setPassword($this->userPasswordHasher->hashPassword($userUser, $password));
-            $manager->persist($userUser);
+
             $panier = new Panier();
             $panier->setUser($userUser);
             $lignePanier= new LignePanier();
             $lignePanier->setPanier($panier);
             $lignePanier->setProduit($lesProduits[rand(0,19)]);
             $lignePanier->setQuantity(rand(1,25));
-            $manager->persist($lignePanier);
             $panier->getLignesPanier()->add($lignePanier);
+            $manager->persist($userUser);
+            $manager->persist($lignePanier);
             $manager->persist($panier);
         }
 
@@ -85,8 +86,6 @@ class AppFixtures extends Fixture
         $userAdmin->setRoles(["ADMIN"]);
         $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, "password"));
         $manager->persist($userAdmin);
-
-        
 
         $manager->flush();
     }

@@ -125,7 +125,8 @@ class PanierController extends AbstractController
 
         $panierValidated->setIsComplete(true);
         $user = $userRepo->find($requestContent["idUser"]);
-        $user->newDefaultPanier();
+        $panier = new Panier();
+        $user->addPanier($panier);
 
         $entityManager->persist($user);
         $entityManager->persist($panierValidated);
