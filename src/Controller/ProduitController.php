@@ -48,21 +48,27 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * Renvoie tous les produits
+     * Renvoie tous les produits avec un filtre
      * 
      * @param SerializerInterface $serializer
      * @param ProduitRepository $product
      * @return JsonResponse
      */
     #[Route('/produit', name: 'produit.getAll', methods: ['GET'])]
-    public function getAllProduit(SerializerInterface $serializer, ProduitRepository $product, TagAwareCacheInterface $cache): JsonResponse
+    public function getAllProduit(SerializerInterface $serializer, ProduitRepository $produitRepository, TagAwareCacheInterface $cache,Request $request): JsonResponse
     {
-        $produit = $product->findAll();
-        $produitJson = $cache->get("getAllProduits", function (ItemInterface $item) use ($serializer, $product){
+        $nom = $request->query->get("nom") ? $request->query->get("nom") : "";
+        $prix = $request->query->get("prix") ? $request->query->get("prix") : "ASC"; 
+        $niveauDifficulte = $request->query->get("niveau_difficulte") ? $request->query->get("niveau_difficulte") : "ASC";
+        $nbPiece = $request->query->get("nb_piece") ? $request->query->get("nb_piece") : "ASC";
+        $tempsCompletion = $request->query->get("temps_completion") ? $request->query->get("temps_completion") : "ASC";
+        $produit = $produitRepository->getAllProduitsFiltre($nom,$prix,$niveauDifficulte,$nbPiece,$tempsCompletion);
+        $produitJson = $cache->get("getAllProduits", function (ItemInterface $item) use ($serializer, $produitRepository){
+            echo 'ijfnsdijs';
             $item->tag("produitCache");
-            $cours = $product->findAll();
+            $produit = $produitRepository->findAll();
             $context = SerializationContext::create()->setGroups(['getAllProduit']);
-            return $serializer->serialize($cours, 'json', $context);
+            return $serializer->serialize($produit, 'json', $context);
         });
         return new JsonResponse($produitJson, Response::HTTP_OK, [], true);
     }

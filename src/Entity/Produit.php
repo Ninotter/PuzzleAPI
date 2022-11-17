@@ -80,10 +80,11 @@ class Produit
     #[Assert\Type(type: 'bool', message:"Le status doit être un boolean")]
     private ?bool $status = true;
 
+    #[Groups(["getAllProduit", "getProduit", "getLignePanier"])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateCreation = null;
 
-    #[Groups(["getAllProduit", "getProduit"])]
+    #[Groups(["getAllProduit", "getProduit", "getLignePanier"])]
     #[Assert\Type(type: 'string', message:"Le codeCountry doit être une chaîne de caractères")]
     #[Assert\Regex(
         pattern: '/^A(BW|FG|GO|IA|L[AB]|ND|R[EGM]|SM|T[A

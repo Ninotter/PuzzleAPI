@@ -64,6 +64,21 @@ class ProduitRepository extends ServiceEntityRepository
        ;
     }
 
+    public function getAllProduitsFiltre(string $nom = "", string $prix = "ASC", string $niveauDifficulte = "ASC", string $nbPiece ="ASC", string $tempsCompletion = "ASC") : array{
+        $nom = '%' . $nom . '%';
+        return $this->createQueryBuilder('p')
+           ->andWhere('p.status = true')
+           ->andWhere('p.nom like :nom')
+           ->setParameter('nom', $nom)
+           ->orderBy('p.prix', $prix)
+           ->orderBy('p.niveauDifficulte', $niveauDifficulte)
+           ->orderBy('p.nbPiece', $nbPiece)
+           ->orderBy('p.tempsCompletion', $tempsCompletion)
+           ->getQuery()
+           ->getResult()
+       ;
+    }
+
 //    /**
 //     * @return Produit[] Returns an array of Produit objects
 //     */
