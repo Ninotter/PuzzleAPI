@@ -32,6 +32,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Panier::class, orphanRemoval: true)]
     private Collection $paniers;
 
+    #[ORM\Column]
+    private ?bool $status = false;
+
     public function __construct()
     {
         $this->idProduit = new ArrayCollection();
@@ -134,6 +137,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $panier->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

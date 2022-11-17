@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LignePanierRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LignePanierRepository::class)]
 class LignePanier
@@ -11,23 +12,25 @@ class LignePanier
     #[ORM\Id]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?produit $produit = null;
+    #[Groups(["getLignePanier"])]
+    private ?Produit $produit = null;
     
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'lignesPanier')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?panier $panier = null;
+    private ?Panier $panier = null;
 
     #[ORM\Column]
+    #[Groups(["getLignePanier"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?int $quantity = null;
 
-    public function getProduit(): ?produit
+    public function getProduit(): ?Produit
     {
         return $this->produit;
     }
 
-    public function setProduit(?produit $produit): self
+    public function setProduit(?Produit $produit): self
     {
         $this->produit = $produit;
 
@@ -46,12 +49,12 @@ class LignePanier
         return $this;
     }
 
-    public function getPanier(): ?panier
+    public function getPanier(): ?Panier
     {
         return $this->panier;
     }
 
-    public function setPanier(?panier $panier): self
+    public function setPanier(?Panier $panier): self
     {
         $this->panier = $panier;
 

@@ -2,11 +2,13 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\LignePanier;
 use Faker\Factory;
 use App\Entity\Type;
 use App\Entity\User;
 use Faker\Generator;
 use App\Entity\Produit;
+use App\Entity\Panier;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -34,22 +36,6 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        //Authentified Users
-        for ($i=0; $i < 10; $i++) { 
-            $userUser = new User();
-            $password = $this->faker->password(2,6);
-            $userUser->setUsername($this->faker->username() .'@'.$password);
-            $userUser->setRoles(["USER"]);
-            $userUser->setPassword($this->userPasswordHasher->hashPassword($userUser, $password));
-            $manager->persist($userUser);
-        }
-
-        $userAdmin = new User();
-        $userAdmin->setUsername("admin");
-        $userAdmin->setRoles(["ADMIN"]);
-        $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, "password"));
-        $manager->persist($userAdmin);
-
         $lesTypes = array();
         for ($i=0; $i < 5; $i++) { 
             $type = new Type();
@@ -58,6 +44,7 @@ class AppFixtures extends Fixture
             $lesTypes[] = $type;
             $manager->persist($type);
         }
+        $lesProduits = array();
         for ($i=0; $i < 20; $i++) { 
             $product = new Produit();
             $product->setNom($this->faker->word());
@@ -70,8 +57,36 @@ class AppFixtures extends Fixture
             $product->setDateCreation($this->faker->dateTime());
             $product->setPaysOrigine($this->faker->countryISOAlpha3());
             $product->setStatus(true);
+            $lesProduits[] = $product;
             $manager->persist($product);
         }
+
+        //Authentified Users
+        for ($i=0; $i < 10; $i++) { 
+            $userUser = new User();
+            $password = $this->faker->password(2,6);
+            $userUser->setUsername($this->faker->username() .'@'.$password);
+            $userUser->setRoles(["USER"]);
+            $userUser->setPassword($this->userPasswordHasher->hashPassword($userUser, $password));
+            $manager->persist($userUser);
+            $panier = new Panier();
+            $panier->setUser($userUser);
+            $lignePanier= new LignePanier();
+            $lignePanier->setPanier($panier);
+            $lignePanier->setProduit($lesProduits[rand(0,19)]);
+            $lignePanier->setQuantity(rand(1,25));
+            $manager->persist($lignePanier);
+            $panier->getLignesPanier()->add($lignePanier);
+            $manager->persist($panier);
+        }
+
+        $userAdmin = new User();
+        $userAdmin->setUsername("admin");
+        $userAdmin->setRoles(["ADMIN"]);
+        $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, "password"));
+        $manager->persist($userAdmin);
+
+        
 
         $manager->flush();
     }

@@ -48,7 +48,7 @@ class Picture
 
     #[ORM\Column]
     #[Assert\Type(type: 'bool', message:"Le status doit être un boolean.")]
-    private ?bool $status = null;
+    private ?bool $status = true;
 
     /**
      * @var File|null

@@ -39,6 +39,18 @@ class LignePanierRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByPanierAndProduit(int $idPanier, int $idProduit): ?LignePanier
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.Panier = :idPanier')
+            ->andWhere('l.Produit = :Produit')
+            ->setParameter('idPanier', $idPanier)
+            ->setParameter('idProduit', $idProduit)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
 //    /**
 //     * @return LignePanier[] Returns an array of LignePanier objects
 //     */

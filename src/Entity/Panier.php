@@ -20,12 +20,12 @@ class Panier
     private ?User $User = null;
 
     #[ORM\Column]
-    private ?bool $isComplete = null;
+    private ?bool $isComplete = false;
 
     #[ORM\Column]
-    private ?bool $status = null;
+    private ?bool $status = true;
 
-    #[ORM\OneToMany(mappedBy: 'panier', targetEntity: Lignepanier::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'panier', targetEntity: LignePanier::class, orphanRemoval: true)]
     private Collection $lignesPanier;
 
     public function __construct()
@@ -76,14 +76,14 @@ class Panier
     }
 
     /**
-     * @return Collection<int, Lignepanier>
+     * @return Collection<int, LignePanier>
      */
     public function getLignesPanier(): Collection
     {
         return $this->lignesPanier;
     }
 
-    public function addLignesPanier(Lignepanier $lignesPanier): self
+    public function addLignesPanier(LignePanier $lignesPanier): self
     {
         if (!$this->lignesPanier->contains($lignesPanier)) {
             $this->lignesPanier->add($lignesPanier);
@@ -93,7 +93,7 @@ class Panier
         return $this;
     }
 
-    public function removeLignesPanier(Lignepanier $lignesPanier): self
+    public function removeLignesPanier(LignePanier $lignesPanier): self
     {
         if ($this->lignesPanier->removeElement($lignesPanier)) {
             // set the owning side to null (unless already changed)

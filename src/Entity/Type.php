@@ -29,7 +29,7 @@ class Type
     private Collection $lesProduits;
 
     #[ORM\Column]
-    private ?bool $status = null;
+    private ?bool $status = true;
 
     public function __construct()
     {
