@@ -64,7 +64,7 @@ class ProduitController extends AbstractController
         $tempsCompletion = $request->query->get("temps_completion") ? $request->query->get("temps_completion") : "ASC";
         $produit = $produitRepository->getAllProduitsFiltre($nom,$prix,$niveauDifficulte,$nbPiece,$tempsCompletion);
         $produitJson = $cache->get("getAllProduits", function (ItemInterface $item) use ($serializer, $produitRepository){
-            echo 'ijfnsdijs';
+            echo 'mise en cache';
             $item->tag("produitCache");
             $produit = $produitRepository->findAll();
             $context = SerializationContext::create()->setGroups(['getAllProduit']);
