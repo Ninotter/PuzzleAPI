@@ -167,15 +167,6 @@ class ProduitController extends AbstractController
         $jsonProduit = $serializer->serialize($produit, 'json', $context);
         return new JsonResponse($jsonProduit, Response::HTTP_CREATED, ["Location" => $location], true);
     }
-    //TESTS RAW BODY POSTMAN
-    // {
-    //     "nom": "testchangement",
-    //     "prix" : 6,
-    //     "niveauDifficulte" : 2,
-    //     "nbPiece":  3,
-    //     "tempsCompletion": 90,
-    //     "idType": 38
-    // }
 
     /** Fonction qui update les données d'un produit 
      * @param TypeRepository $typeRepository
