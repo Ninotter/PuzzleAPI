@@ -58,18 +58,21 @@ class ProduitController extends AbstractController
     public function getAllProduit(SerializerInterface $serializer, ProduitRepository $produitRepository, TagAwareCacheInterface $cache,Request $request): JsonResponse
     {
         $nom = $request->query->get("nom") ? $request->query->get("nom") : "";
-        $prix = $request->query->get("prix") ? $request->query->get("prix") : "ASC"; 
-        $niveauDifficulte = $request->query->get("niveau_difficulte") ? $request->query->get("niveau_difficulte") : "ASC";
-        $nbPiece = $request->query->get("nb_piece") ? $request->query->get("nb_piece") : "ASC";
-        $tempsCompletion = $request->query->get("temps_completion") ? $request->query->get("temps_completion") : "ASC";
+        $prix = $request->query->get("prix") ? $request->query->get("prix") : ""; 
+        $niveauDifficulte = $request->query->get("niveau_difficulte") ? $request->query->get("niveau_difficulte") : "";
+        $nbPiece = $request->query->get("nb_piece") ? $request->query->get("nb_piece") : "";
+        $tempsCompletion = $request->query->get("temps_completion") ? $request->query->get("temps_completion") : "";
         $produit = $produitRepository->getAllProduitsFiltre($nom,$prix,$niveauDifficulte,$nbPiece,$tempsCompletion);
-        $produitJson = $cache->get("getAllProduits", function (ItemInterface $item) use ($serializer, $produitRepository){
-            echo 'ijfnsdijs';
-            $item->tag("produitCache");
-            $produit = $produitRepository->findAll();
-            $context = SerializationContext::create()->setGroups(['getAllProduit']);
-            return $serializer->serialize($produit, 'json', $context);
-        });
+        $context = SerializationContext::create()->setGroups(['getAllProduit']);
+        $produitJson =  $serializer->serialize($produit, 'json', $context);
+
+        // $produitJson = $cache->get("getAllProduits", function (ItemInterface $item) use ($serializer, $produitRepository){
+        //     echo 'mise en cache';
+        //     $item->tag("produitCache");
+        //     $produit = $produitRepository->findAll();
+        //     $context = SerializationContext::create()->setGroups(['getAllProduit']);
+        //     return $serializer->serialize($produit, 'json', $context);
+        // });
         return new JsonResponse($produitJson, Response::HTTP_OK, [], true);
     }
 

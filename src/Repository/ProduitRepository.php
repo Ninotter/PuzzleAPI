@@ -64,19 +64,31 @@ class ProduitRepository extends ServiceEntityRepository
        ;
     }
 
-    public function getAllProduitsFiltre(string $nom = "", string $prix = "ASC", string $niveauDifficulte = "ASC", string $nbPiece ="ASC", string $tempsCompletion = "ASC") : array{
+    public function getAllProduitsFiltre(string $nom = "", string $prix = "", string $niveauDifficulte = "", string $nbPiece ="", string $tempsCompletion = "") : array{
         $nom = '%' . $nom . '%';
-        return $this->createQueryBuilder('p')
-           ->andWhere('p.status = true')
-           ->andWhere('p.nom like :nom')
-           ->setParameter('nom', $nom)
+        $req = $this->createQueryBuilder('p')
+           ->where('p.status = true')
+           ->andWhere('p.nom LIKE :nomfiltre')
+           ->setParameter('nomfiltre', $nom)
            ->orderBy('p.prix', $prix)
-           ->orderBy('p.niveauDifficulte', $niveauDifficulte)
-           ->orderBy('p.nbPiece', $nbPiece)
-           ->orderBy('p.tempsCompletion', $tempsCompletion)
+           ->addOrderBy('p.niveauDifficulte', $niveauDifficulte)
+           ->addOrderBy('p.nbPiece', $nbPiece)
+           ->addOrderBy('p.tempsCompletion', $tempsCompletion)
            ->getQuery()
-           ->getResult()
        ;
+    //    $sql = "SELECT * FROM Produit p WHERE p.status = true";
+    //    $sql .= $nom ? " AND p.nom like :nom" :  "";
+    //    $sql .= $prix ? " ORDER BY prix :prix" :  "";
+    //    $sql .= $niveauDifficulte ? " order by niveau_difficulte :niveaudifficulte" :  " ";
+    //    $sql .= $nbPiece ? " order by nb_piece :nbpiece " :  "";
+    //    $sql .= $tempsCompletion ? " order by temps_completion :tempscompletion" :  "";
+    //    $req = $this->getEntityManager()->createQuery($sql);
+    //    if($nom) $req->setParameter(":nom", $nom);
+    //    if($prix) $req->setParameter(":prix", $prix);
+    //    if($niveauDifficulte) $req->setParameter(":niveaudifficulte", $niveauDifficulte);
+    //    if($nbPiece) $req->setParameter("nbpiece" ,$nbPiece);
+    //    if($tempsCompletion) $req->setParameter(":tempscompletion" ,$tempsCompletion);
+       return $req->getResult();
     }
 
 //    /**
