@@ -42,8 +42,8 @@ class LignePanierRepository extends ServiceEntityRepository
     public function findByPanierAndProduit(int $idPanier, int $idProduit): ?LignePanier
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.Panier = :idPanier')
-            ->andWhere('l.Produit = :Produit')
+            ->andWhere('l.panier = :idPanier')
+            ->andWhere('l.produit = :idProduit')
             ->setParameter('idPanier', $idPanier)
             ->setParameter('idProduit', $idProduit)
             ->getQuery()

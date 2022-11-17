@@ -39,12 +39,13 @@ class PanierRepository extends ServiceEntityRepository
         }
     }
 
-    public function getUserActivePanier(int $idUser){
+    public function getUserActivePanier(int $idUser): ?Panier {
         return $this->createQueryBuilder('p')
            ->andWhere('p.User = :idUser')
+           ->andWhere('p.isComplete = false')
            ->setParameter('idUser', $idUser)
            ->getQuery()
-           ->getResult()
+           ->getOneOrNullResult()
        ;
     }
 
