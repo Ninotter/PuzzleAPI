@@ -10,25 +10,52 @@ use App\Repository\LignePanierRepository;
 use App\Repository\PanierRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
+use Lcobucci\JWT\Token\Plain;
+use OpenApi\Annotations\RequestBody;
+use OpenApi\Annotations\XmlContent;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Attributes as OA;
+use OpenApi\Attributes\JsonContent;
 
 class PanierController extends AbstractController
 {
+
+
+    /**
+     * Retourne le panier de l'id Panier fourni en paramètre
+     *
+     * @return JsonResponse
+     */
+    #[OA\Parameter(name: 'idPanier',in: 'query',required: true, description: 'id du Panier à chercher',schema: new OA\Schema(type: 'integer'))]
+    #[Route('/panier/ajouter', name: 'ajouterLignePanier',methods: ['GET'])]
+    public function getPanier(Request $request, LignePanierRepository $lignePanierRepo, PanierRepository $panierRepo, ProduitRepository $produitRepo, EntityManagerInterface $entityManager, SerializerInterface $serializer): JsonResponse
+    {
+        $panier = $produitRepo->find($request->get("idPanier"));
+        $context = SerializationContext::create()->setGroups(['getPanier', 'getLignePanier', 'getProduit']);
+        $panierJson = $serializer->serialize($panier, 'json', $context);
+        return new JsonResponse($panierJson, Response::HTTP_CREATED, [], true);
+    }
+
+
     /**
      * Ajoute un produit au panier actif d'un user avec la quantité spécifiée
+     * NE FONCTIONNE PAS DEPUIS NELMIO. UNIQUEMENT TESTABLE AVEC POSTMAN
      *
      * @param User $user
      * @param Produit $produit
      * @return JsonResponse
      */
+    #[OA\Parameter(name: 'idProduit',in: 'query',description: 'Produit(s) à ajouter au panier',schema: new OA\Schema(type: 'integer'))]
+    #[OA\Parameter(name: 'idUser',in: 'query',description: 'Id de l\'user à qui ajouter le(s) produit(s)',schema: new OA\Schema(type: 'integer'))]
+    #[OA\Parameter(name: 'quantity',in: 'query',description: 'Quantité de produit à ajouter',schema: new OA\Schema(type: 'integer'))]
     #[Route('/panier/ajouter', name: 'ajouterLignePanier',methods: ['POST'])]
     public function addToPanier(Request $request, LignePanierRepository $lignePanierRepo, PanierRepository $panierRepo, ProduitRepository $produitRepo, EntityManagerInterface $entityManager, SerializerInterface $serializer): JsonResponse
     {
@@ -40,6 +67,7 @@ class PanierController extends AbstractController
 
         $lignePanierToAdd = $lignePanierRepo->findByPanierAndProduit($panier->getId(), $produit->getId());
 
+        //Si le produit existe déjà dans le panier, ajoute la quantité spécifié
         if ($lignePanierToAdd != null) {
             $lignePanierToAdd->setQuantity($lignePanierToAdd->getQuantity() + $quantity);
             $entityManager->persist($lignePanierToAdd);
@@ -56,14 +84,14 @@ class PanierController extends AbstractController
             $entityManager->persist($lignePanierToAdd);
             $entityManager->flush();
         }
-        $context = SerializationContext::create()->setGroups(['getLignePanier']);
+        $context = SerializationContext::create()->setGroups(['getLignePanier', 'getProduit']);
         $lignePanierJson = $serializer->serialize($lignePanierToAdd, 'json', $context);
         return new JsonResponse($lignePanierJson, Response::HTTP_CREATED, [], true);
     }
 
     /**
      * Retire un produit au panier actif d'un user avec la quantité spécifiée
-     *
+     * NE FONCTIONNE PAS DEPUIS NELMIO. UNIQUEMENT TESTABLE AVEC POSTMAN
      * @return JsonResponse
      */
     #[Route('/panier/supprimer', name: 'supprimerLignePanier',methods: ['DELETE'])]
@@ -112,7 +140,7 @@ class PanierController extends AbstractController
     }
 
     /**
-     * Passe le panier actif d'un user en commande
+     * Passe le panier actif d'un user en panier commandé.
      *
      * @param User $user
      * @return JsonResponse
@@ -124,6 +152,7 @@ class PanierController extends AbstractController
         $requestContent = $request->toArray();
         $panierValidated = $panierRepo->getUserActivePanier($requestContent["idUser"]);
 
+        //L'utilisateur est assigné un nouveau panier actif
         $panierValidated->setIsComplete(true);
         $user = $userRepo->find($requestContent["idUser"]);
         $panier = new Panier();

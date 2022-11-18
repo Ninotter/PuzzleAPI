@@ -1,0 +1,278 @@
+{
+	"info": {
+		"_postman_id": "6feaedca-28b5-424d-bb58-3592c4f8a38e",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16218892"
+	},
+	"item": [
+		{
+			"name": "login check",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/login_check",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"login_check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add produit to panier",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2Njg2MDM4OTUsImV4cCI6MTY2ODYwNzQ5NSwicm9sZXMiOlsiQURNSU4iLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJhZG1pbiJ9.TJbLvQ0XQj63zXKRsrEYtrDtPmIZdOhg8L3yM32_0LQumOe_Vh5fhj8oO3sQpPByYviFf57JM4XCoAtYUkCUt03r27hPiyXaU4ldwfD81jKcZWwX2GJk8Ke5BivMatmSTC9ddjMU7GmsEZODhiL3dK35tX2wit4vn-wupaTRI10QJV9qaGIzREG7M_bWpGGYK1J3biMo-V7G7R-nmAQ3OBhQO6zwReHnHy6U5thOdbcT8TaCbx9n7YpOrijkpA8-aKY9AvpKw8UDJhUMK8XrBB8_ihBpG5pcfb2qFK2DRzcFEBM0COaD86ns9mkqiUXbrbqP45OKVgl7d5fa7hC84AxGAT1lDQ7QiOswrSn7XcSIvrWbAYTLHQftZwIt9b52vzq2kqLgnbbreo1MdFHLABWQs7L_WxsaMXWum6Ng-z8WLgXpkphdJm717-J_OlRmXEGlSFURvcZb2AWl-mzKgqDBAASJ2FZuyGaCHVqCG6d776sYVgyZIrupkN23V4G4o3KjZwuK1AimegTSkJlSsbJ8-bx-GnkzisASyCqQ2TD7N2IZasP_n57l9dXzq8-6LV-hULJMS_QJZyOlfgwqQeT5DIA_a7UD4mRc1__V16TtvrX5e-sUyq6uY17XysASJ4UTsz21kPyqM7R3cnQUAZim5russj0qvrYDWap1GrY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"idUser\": 1,\r\n\"idProduit\":1,\r\n\"quantity\":8\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/panier/ajouter",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"panier",
+						"ajouter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "supprimer from panier",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"idUser\": 1,\r\n\"idProduit\":1,\r\n\"quantity\":8\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/panier/supprimer",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"panier",
+						"supprimer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "valider panier",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"idUser\": 1,\r\n\"idProduit\":1,\r\n\"quantity\":8\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/panier/supprimer",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"panier",
+						"supprimer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get picture by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/panier/valider",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"panier",
+						"valider"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all produits",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjY4NjcyMzQsImV4cCI6MTY2Njg3MDgzNCwicm9sZXMiOlsiQURNSU4iLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJhZG1pbiJ9.ovk9CwFb-WowXsD-PM-_1t0OEvrM1hhNV_Vt_VAnQpfIQwVew_A_Lz8g9ZPVUDdAb7awQw_IbhdyHabElZhHGqjcDAYVP9feEgZ6o7OLPjH2Or2TnKMDjtijrW-Wwaek2hrSMtuG6luuWgqaucgjpJ8e4IfFbQIYtcNVFERJB064ejw5qI54BTZonYkCJ5JmOKA4qaxLuacosiU2cltVlGcWqijE1tkUDHDjIUbCDai6VB5tYsBZe-6Auj63Ugyn2gT7l44louf7dKR1bXOonoH3okioTJO7vcYR9fJt0nSga_ZRp6HsRq5EDNBxkB6mvo9A_-qrvNFD6Iu-Z-xCJQEJi8BKGuX2eEKh4MyRSxs5y7h6EKIXNBzpDsJ_Z4j_vYzI7zpuoSlrstCbbYUSA013qRUIZCCASCOaihuDvmWVFSlGW-gkzFE4vXLzJHFjmxj164NYfgp6GLby3nGCTQZCTdHu9UjnKCgoU4GCQ_4QQppbaE_vjLCcoorvPLkBOwLztJCWZ9T6hvwI9RB_OElmJDiWYjDSWO2sJU1SVcBhCForb5ROXtlejJnznGO8CLlFIuLntEe2PlfLYBB6UlRbAOEbLF-CnflJdN9FBjl5CfJVWqPsw2MdOo-i_9fg5DLT0K7LqwJYipoi0f_xIQGN2090msSXqYGJVMmfbiQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/produit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"produit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete produit",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjY4NjcwMzMsImV4cCI6MTY2Njg3MDYzMywicm9sZXMiOlsiQURNSU4iLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJhZG1pbiJ9.EkgK5-j4qllFKHmuWJp8X8-vQ_SjweemE2q8aoDvxbyjTHx7jV5EbR6DKxK7lwJ_NIqxEjpQxUPfXGrSyOqFvH_FBxxv2qClKbepP8TukmN0leslGO8zNwsMM-JjW9WON5fEnAMKxc0lYCbkumkNoH64iz9S1GQmJcLGt1-lPh1s0v2-OyJe5a8ncYD3ou2pNTbgtoXMo4ApyNVe74YbaKSvkf-rDCMtrh9ytPdKpmA5hREL8f0h8g9obGz_v_hsxObfm6Qsvwv_Lk9QC_0BypCQCKKIK4vUo1aaRUUSIM-3z0CXjOYqnF8MqgNq45R_5mnmGKEma1cmMA7DLtAqWGwY4nR4sRZQxuYtn2jRG4Q4thV_P1jXZMWCaAv_cwvaOS-clgew41LlXPiabU9HwH6jLBKsX9ggzquSZzbPFY8CiaRIsRL1J_JwHsu0vaU_PSFq22lY9Oz-Ojk_lYtW1uwgzmfYGHc1A0aikAz15MJ5TjSpLGoj6ZZxban2lLQR1YjDlfLUSTM0LFffqTXJKCkbSQNm0Uo3RI8_iB0V-8bdQSc3U8s8fKygGbQRTSNadpnJTrc_p3Bcm9AuLJ70MnIIRXvXgMp4MlagIILewJ_PW2_fIeR_lVqoQHeSrCK4WPl0ItqEKhOsAX-bg3qq4Lm2UHA2UcOGo27u7sc7dHI",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/produit/5",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"produit",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add produit",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjY4NjY2NDEsImV4cCI6MTY2Njg3MDI0MSwicm9sZXMiOlsiQURNSU4iLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJhZG1pbiJ9.k-cfypj3fbVy6vTEdthPjXf3kvwzoLDcdrxj4eDAvwNrZ7G9jUmZccADGo91zOM_UAb_noxmQngHYVdpPJbTfF0HqS5Z1eJoRe7wc6g1iQ0OTAQoUbLSfrkr_UU5gNM3OvHIRrfRot4GynP01bEZKW02mLxpD_aI-fcXi54Sybj85tdG-2QgJ0d7sdqvMSqSGtnRwOf3ZYTv6tVJsIDO1w7ceANC2j6xC4UeY1DRo8y-H5Wm9BYKqRFkOFd_eM-WV5jAq298-QTMiEKMb-pmpbfNK35sSJHSLNzVS66IflPUPJu1HvpWGUlqTtLP3hnZY4lhoV_DMdhD1JOEscrYMvFfWWT8W-9PN45X-gjPUSRmZkICEKv6Z27TNR-RuX7UYFHy2ud5SiOZtFZetaRYSqYCw_H3EtQZDPRXgc8WqOacrk9ADQ_XRp1aaiv4dHNWZrkxe-2wxtSAXJXjWKf5zRSfulZiOsEaJZBGHAALokfuSDOAePxv0V8gKxbBZMSb3R7qBxLi-cEpA0s5qv8vkrWJTFVr4-MjbAPhW53c-_5UFX87qWps1CqUq75AsG5hLOBNjtv63_jzp6aRWdEOjFYtsNR7c8NcEae_60r1BYxOeDD4OqHrKFIugvy10NSQppCdRG2HBG29YR8wQMN-CVazJdiNPICgjhRAAFfX8Cs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nom\": \"testchangement\",\r\n    \"prix\" : 6,\r\n    \"niveauDifficulte\" : 2,\r\n    \"nbPiece\":  3,\r\n    \"tempsCompletion\": 90,\r\n    \"idType\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/produit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"produit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get deleted produits",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjY4NjcwMzMsImV4cCI6MTY2Njg3MDYzMywicm9sZXMiOlsiQURNSU4iLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJhZG1pbiJ9.EkgK5-j4qllFKHmuWJp8X8-vQ_SjweemE2q8aoDvxbyjTHx7jV5EbR6DKxK7lwJ_NIqxEjpQxUPfXGrSyOqFvH_FBxxv2qClKbepP8TukmN0leslGO8zNwsMM-JjW9WON5fEnAMKxc0lYCbkumkNoH64iz9S1GQmJcLGt1-lPh1s0v2-OyJe5a8ncYD3ou2pNTbgtoXMo4ApyNVe74YbaKSvkf-rDCMtrh9ytPdKpmA5hREL8f0h8g9obGz_v_hsxObfm6Qsvwv_Lk9QC_0BypCQCKKIK4vUo1aaRUUSIM-3z0CXjOYqnF8MqgNq45R_5mnmGKEma1cmMA7DLtAqWGwY4nR4sRZQxuYtn2jRG4Q4thV_P1jXZMWCaAv_cwvaOS-clgew41LlXPiabU9HwH6jLBKsX9ggzquSZzbPFY8CiaRIsRL1J_JwHsu0vaU_PSFq22lY9Oz-Ojk_lYtW1uwgzmfYGHc1A0aikAz15MJ5TjSpLGoj6ZZxban2lLQR1YjDlfLUSTM0LFffqTXJKCkbSQNm0Uo3RI8_iB0V-8bdQSc3U8s8fKygGbQRTSNadpnJTrc_p3Bcm9AuLJ70MnIIRXvXgMp4MlagIILewJ_PW2_fIeR_lVqoQHeSrCK4WPl0ItqEKhOsAX-bg3qq4Lm2UHA2UcOGo27u7sc7dHI",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/deleted/produit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"deleted",
+						"produit"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

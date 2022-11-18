@@ -166,7 +166,9 @@ class ProduitController extends AbstractController
         return new JsonResponse($jsonProduit, Response::HTTP_CREATED, ["Location" => $location], true);
     }
 
-    /** Fonction qui update les données d'un produit 
+    /** Route qui update les données d'un produit 
+     * NE FONCTIONNE PAS DEPUIS NELMIO. UNIQUEMENT TESTABLE AVEC POSTMAN
+     * 
      * @param TypeRepository $typeRepository
      * @param Produit $produit
      * @param Request $request
@@ -175,6 +177,11 @@ class ProduitController extends AbstractController
      * @param UrlGeneratorInterface $urlGenerator
      * @return JsonResponse
      */
+    #[OA\Parameter(name: 'nom',in: 'query',description: 'nom à changer',schema: new OA\Schema(type: 'string', minimum: 3))]
+    #[OA\Parameter(name: 'prix',in: 'query',description: 'prix à changer',schema: new OA\Schema(type: 'float'))]
+    #[OA\Parameter(name: 'niveauDifficulte',in: 'query',description: 'nom à changer',schema: new OA\Schema(type: 'integer', minimum:1, maximum : 5))]
+    #[OA\Parameter(name: 'nbPiece',in: 'query',description: 'nombre de pièces à changer',schema: new OA\Schema(type: 'integer', minimum: 1, maximum: 60))]
+    #[OA\Parameter(name: 'tempsCompletion',in: 'query',description: 'temps de completion à changer',schema: new OA\Schema(type: 'integer', minimum:1))]
     #[Route('/produit/{idProduit}', name: 'produit.update', methods: ['PUT'])]
     #[ParamConverter("produit", options : ["id" => "idProduit"])]
     public function updateProduit(TypeRepository $typeRepository, Produit $produit, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator): JsonResponse

@@ -12,7 +12,7 @@ class LignePanier
     #[ORM\Id]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["getLignePanier"])]
+    #[Groups(["getLignePanier"], ["getPanier"])]
     private ?Produit $produit = null;
     
     #[ORM\Id]

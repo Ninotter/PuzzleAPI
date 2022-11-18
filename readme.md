@@ -1,5 +1,8 @@
 Hugo ROUMAGNE & Nino DIDIER <br>
-API d'une liste de puzzle & casses-têtes: <br>
+
+L'export de la collection Postman est dans la racine de du projet. (PuzzleAPI/API.postman_collection.json)
+
+API d'une vente de puzzle & casses-têtes: <br>
 ils sont définis par l'entité produits et ont: <br>
 un nom, <br>
 un prix, <br>
@@ -9,6 +12,5 @@ un nombre de pièces, <br>
 un temps de complètion, <br>
 un statut (bool). <br>
 
-On compte rajouter à l'API: <br>
-Qu'un produit ait une ou plusieurs photo (avec l'entité picture en ManyToOne) <br>
-Des propriétés au produit(date de création du casse-tête, origine (code country?)) <br>
+Chaque utilisateur a un panier actif, et peut avoir plusieurs paniers inactif qui correspondent à d'ancien paniers validés qui deviennent des commandes <br>
+La liste de tous les produits peux être filtrée par nom ainsi qui trier par prix, niveau de difficulté, nombre de pièces, et le temps de complétion.

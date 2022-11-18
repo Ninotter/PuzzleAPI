@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TypeController extends AbstractController
 {
     /**
-     * WIP: Route qui renvoie tout les types
+     * :Route qui renvoie tout les types
      *
      * @param SerializerInterface $serializer
      * @param ProduitRepository $product
